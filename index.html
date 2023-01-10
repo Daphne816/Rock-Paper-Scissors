@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>Rock, Paper, Scissors</title>
+  </head>
+  <body>
+    <!-- <button type="button" onclick="game()">Play Rock, Paper, Scissors</button> -->
+    <button type="button" id="rock" class="choice">Rock</button>
+    <button type="button" id="paper" class="choice">Paper</button>
+    <button type="button" id="scissors" class="choice">Scissors</button>
+    <div id="results"></div>
+  </body>
+  <script>
+            function getComputerChoice(min, max){
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        let choice = Math.floor(Math.random() * (max - min + 1) + min);
+        if(choice == 1){
+          choice = "rock";
+        }
+        else if(choice == 2){
+          choice = "paper";
+        }
+        else if(choice == 3){
+          choice = "scissors";
+        }
+        return choice;
+      }
+
+      function playRound(userChoice){
+        compChoice = getComputerChoice(1,3);
+        userChoice = userChoice.toLowerCase();
+        let result = "";
+        if (userChoice == "rock"){
+          if(compChoice == "rock"){
+            result = "Tie: You and the computer both chose \"Rock\"";
+          }
+          else if (compChoice == "paper"){
+            result = "You Lose: Paper covers Rock";
+          }
+          else{
+            result = "You Win: Rock smashes Scissors";
+          }
+        }
+        else if(userChoice == "paper"){
+          if(compChoice == "rock"){
+            result = "You Win: Paper covers Rock";
+          }
+          else if(compChoice == "paper"){
+            result = "Tie: You and the computer both chose \"Paper\"";
+          }
+          else{
+            result = "You Lose: Scissors cuts Paper";
+          }
+        }
+        else{
+          if(compChoice == "rock"){
+            result = "You Lose: Rock smashes scissors";
+          }
+          else if(compChoice == "paper"){
+            result = "You Win: Scissors cuts Paper";
+          }
+          else{
+            result = "Tie: You and the computer both chose \"Scissors\"";
+          }
+        }
+        return result;
+      }
+
+      const choices = document.querySelectorAll(".choice");
+      const resultDiv = document.getElementById("results");
+      let compWins = 0;
+      let userWins = 0;
+      choices.forEach((choice) => {
+        choice.addEventListener("click", () => {
+          const resultPara = document.createElement("p");
+          const scorePara = document.createElement("p");
+          resultPara.innerText = playRound(choice.id);
+          if(resultPara.innerText.startsWith("You Win")){
+            userWins++;
+          }
+          else if(resultPara.innerText.startsWith("You Lose")){
+            compWins++;
+          }
+          scorePara.innerText = `Computer: ${compWins} User: ${userWins}`;
+          resultDiv.appendChild(resultPara);
+          resultDiv.appendChild(scorePara);
+
+          if(compWins == 5 || userWins == 5){
+            const winPara = document.createElement("p");
+            winPara.style.fontWeight = "bold";
+            if(compWins == 5){
+              winPara.innerText = "The computer has won! Better luck next time!";
+            }
+            else{
+              winPara.innerText = "Congratulations, you won!";
+            }
+            resultDiv.appendChild(winPara);
+            compWins = 0;
+            userWins = 0;
+          }
+        });
+      });
+  </script>
+</html>
