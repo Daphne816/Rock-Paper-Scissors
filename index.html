@@ -11,8 +11,11 @@
     <button type="button" id="scissors" class="choice">Scissors</button>
     <div id="results"></div>
   </body>
+  <style>
+    p.win {font-weight: bold;}
+  </style>
   <script>
-            function getComputerChoice(min, max){
+      function getComputerChoice(min, max){
         min = Math.ceil(min);
         max = Math.floor(max);
         let choice = Math.floor(Math.random() * (max - min + 1) + min);
@@ -31,7 +34,16 @@
       function playRound(userChoice){
         compChoice = getComputerChoice(1,3);
         userChoice = userChoice.toLowerCase();
+        winCheck = document.querySelector("p.win");
         let result = "";
+        let oldResults = "";
+        if(winCheck){
+          oldResults = document.querySelectorAll("div#results > *");
+          oldResults.forEach((oldResult) => {
+            resultDiv.removeChild(oldResult);
+          })
+        }
+        
         if (userChoice == "rock"){
           if(compChoice == "rock"){
             result = "Tie: You and the computer both chose \"Rock\"";
@@ -89,7 +101,7 @@
 
           if(compWins == 5 || userWins == 5){
             const winPara = document.createElement("p");
-            winPara.style.fontWeight = "bold";
+            winPara.setAttribute("class", "win");
             if(compWins == 5){
               winPara.innerText = "The computer has won! Better luck next time!";
             }
